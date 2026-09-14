@@ -71,9 +71,10 @@ public class AesEncryptionStrategy implements EncryptionStrategy {
          * Do NOT generate a new key or IV here.
          */
 
-        throw new UnsupportedOperationException(
-                "Decryption will be implemented separately"
-        );
+        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        GCMParameterSpec specification = new GCMParameterSpec(TAG_LENGTH, payload.iv());
+        cipher.init(Cipher.DECRYPT_MODE, key, specification);
+        return cipher.doFinal(payload.ciphertext());
     }
 
     /**
